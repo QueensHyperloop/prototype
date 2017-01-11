@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Queen's Hyperloop</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Dynamic shapes -->
+    <link href="css/shapes.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Queen's Hyperloop Testing</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="clients.html"><i class="fa fa-plug fa-fw"></i> Clients</a>
+                        </li>
+                        <li>
+                            <a href="http://192.168.10.52:8080"><i class="fa fa-hdd-o fa-fw"></i> RethinkDB</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Dashboard</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <div class="panel panel-default">
+                        <div id="speedG" class="center-block" style="height:150px; width:150px;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="panel panel-default">
+                        <div id="batteryG" class="center-block" style="height:150px; width:150px;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="panel panel-default">
+                        <div id="clientG" class="center-block" style="height:150px; width:150px;"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="panel panel-default">
+                        <div id="clientG" class="center-block" style="height:150px; width:150px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-area-chart fa-fw"></i> Button presses
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body center-block" style="width: 90%;">
+                            <canvas id="buttonChart"></canvas>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-arrows fa-fw"></i> Acceleration
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="accelerometer">
+                                <svg id="accel_svg1" width="150" height="150" class="center-block">
+                                    <circle cx="75" cy="75" r="70" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="60" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="50" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="40" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="30" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="20" stroke="#626567" stroke-width="1" fill="none" />
+                                    <circle cx="75" cy="75" r="10" stroke="#626567" stroke-width="1" fill="none" />
+                                    <line x1="20" y1="20" x2="130" y2="130" stroke="#626567" stroke-width="1" />
+                                    <line x1="130" y1="20" x2="20" y2="130" stroke="#626567" stroke-width="1" />
+                                    <line x1="75" y1="0" x2="75" y2="150" stroke="#626567" stroke-width="1" />
+                                    <line x1="0" y1="75" x2="150" y2="75" stroke="#626567" stroke-width="1" />
+                                    <circle id="target2D" class="target" cx="75" cy="75" r="5" fill="#E74C3C" stroke="grey" stroke-width="0.5" />
+                                </svg>
+                                <svg id="accel_svg2" width="120" height="80" class="center-block">
+                                    <line x1="0" y1="40" x2="120" y2="40" stroke="#A6ACAF" stroke-width="8" />
+                                    <circle id="target3D" class="target" cx="60" cy="40" r="5" fill="#E74C3C" stroke="grey" stroke-width="0.5" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-repeat fa-fw"></i> Gyroscope
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <section class="box">
+                                <div id="cube">
+                                    <figure class="front"></figure>
+                                    <figure class="back"></figure>
+                                    <figure class="right"></figure>
+                                    <figure class="left"></figure>
+                                    <figure class="top"></figure>
+                                    <figure class="bottom"></figure>
+                                </div>
+                            </section>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+                <!-- /.col-lg-4 -->
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js "></script>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js "></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js "></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js "></script>
+
+    <script type="text/javascript ">
+        var socket = io();
+        var refresh = 300; //sec
+        var time = new Date().getTime();
+    </script>
+
+    <!-- JustGauge -->
+    <script src="vendor/justgage/raphael-2.1.4.min.js "></script>
+    <script src="vendor/justgage/justgage.js "></script>
+    <script src="js/gage.js"></script>
+
+    <!-- Chart.js JavaScript -->
+    <script src="node_modules/chart.js/dist/Chart.bundle.min.js "></script>
+
+    <!-- Data Scripts -->
+    <script src="js/charts.js "></script>
+    <script src="js/socket.io.js "></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js "></script>
+
+</body>
+
+</html>
