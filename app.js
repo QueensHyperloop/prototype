@@ -1,6 +1,5 @@
 const five = require('johnny-five');
 const Particle = require('particle-io');
-const rdb = require('rethinkdb');
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -19,46 +18,63 @@ app.get('/', function (req, res, next) {
 });
 
 var time = new Date();
-
 var connection = null;
-rdb.connect({
-    host: 'localhost',
-    port: 28015
-}, function (err, conn) {
-    if (err) throw err;
-    connection = conn;
-})
-var btnDB = rdb.db('pod').table('button')
+var sampleCount = [1, 1];
+var sampleRate = [3, 10];
+var accel = [0, 0, 0, 0];
+var gyro = [0, 0, 0];
+var temp = 0;
+var press = 0;
+var clients = 0;
 
 board.on("ready", function () {
     console.log("Device Ready..");
-    button = new five.Button({
-        board: board,
-        pin: "D1",
-        holdtime: 500
+    var imu = new five.IMU({
+        controller: "MPU6050",
+        freq: 100
     });
-    button.on("down", function () {
-        state = true;
-        console.log("down");
-        io.emit('button', 1);
-        btnDB.insert({
-            time: time.getTime(),
-            value: 1
-        }).run(connection, function (err, result) {
-            if (err) throw err;
-        })
-    })
-    button.on("up", function () {
-        console.log("up");
-        io.emit('button', 0);
-        btnDB.insert({
-            time: time.getTime(),
-            value: 0
-        }).run(connection, function (err, result) {
-            if (err) throw err;
-        })
+    var multi = new five.Multi({
+        controller: "BMP180",
+        freq: 700
     });
-    var clients = 0;
+    imu.on("data", function () {
+        sampleCount[0]++;
+        accel[0] += this.accelerometer.x;
+        accel[1] += this.accelerometer.y;
+        accel[2] += this.accelerometer.z;
+        accel[3] += this.accelerometer.acceleration - 1;
+        gyro[0] += this.accelerometer.pitch;
+        gyro[1] += this.accelerometer.roll;
+        gyro[2] += this.accelerometer.inclination;
+        if (sampleCount[0] % sampleRate[0] == 0) {
+            accel[0] = accel[0] / (sampleRate[0] - 1);
+            accel[1] = accel[1] / (sampleRate[0] - 1);
+            accel[2] = accel[2] / (sampleRate[0] - 1);
+            accel[3] = accel[3] / (sampleRate[0] - 1);
+            io.emit('accel', accel);
+            gyro[0] = gyro[0] / (sampleRate[0] - 1);
+            gyro[1] = gyro[1] / (sampleRate[0] - 1);
+            gyro[2] = gyro[2] / (sampleRate[0] - 1);
+            io.emit('angle', gyro);
+            accel = [0, 0, 0, 0];
+            gyro = [0, 0, 0];
+            sampleCount[0] = 1;
+        }
+    });
+    multi.on("data", function () {
+        sampleCount[1]++;
+        temp += this.thermometer.celsius;
+        press += this.barometer.pressure;
+        if (sampleCount[1] % sampleRate[1] == 0) {
+            temp = temp / (sampleRate[1] - 1);
+            io.emit('temp', temp);
+            press = press / (sampleRate[1] - 1);
+            io.emit('pressure', press);
+            press = 0;
+            temp = 0;
+            sampleCount[1] = 1;
+        }
+    });
     io.on('connection', function (socket) {
         //console.log('a user connected');
         clients++;
