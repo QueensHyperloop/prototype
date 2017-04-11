@@ -1,18 +1,17 @@
-var ctx = document.getElementById("clientChart");
-if (ctx != null) {
-    var clientData = {
-        labels: ["lbl1"],
-        datasets: [{
-            label: "Connected clients",
-            backgroundColor: "rgba(84,153,199,0.6)",
-            lineTension: 0.2,
-            data: [{
-                x: 0,
-                y: 0
+var clientData = {
+    labels: ["lbl1"],
+    datasets: [{
+        label: "Connected clients",
+        backgroundColor: "rgba(84,153,199,0.6)",
+        lineTension: 0.2,
+        data: [{
+            x: 0,
+            y: 0
             }]
         }]
-    };
-
+};
+var ctx = document.getElementById("clientChart");
+if (ctx != null) {
     var clientChart = new Chart(ctx, {
         type: 'line',
         data: clientData,
@@ -27,12 +26,12 @@ if (ctx != null) {
     });
 }
 
-ctx = document.getElementById("buttonChart");
+ctx = document.getElementById("accelChart");
 if (ctx != null) {
-    var buttonData = {
-        labels: ["lbl1"],
+    var accelData = {
+        labels: ["Acceleration"],
         datasets: [{
-            label: "Button",
+            label: "accel",
             backgroundColor: "rgba(236,112,99,0.7)",
             lineTension: 0.2,
             data: [{
@@ -41,9 +40,9 @@ if (ctx != null) {
             }]
         }]
     };
-    var buttonChart = new Chart(ctx, {
+    var accelChart = new Chart(ctx, {
         type: 'line',
-        data: buttonData,
+        data: accelData,
         options: {
             scales: {
                 xAxes: [{
