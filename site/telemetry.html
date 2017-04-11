@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Queen's Hyperloop</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div id="tempG" class="center-block" style="height:120px; width:120px;"></div>
+                </div>
+                <div class="col-lg-2">
+                    <div id="accelG" class="center-block" style="height:120px; width:120px;"></div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js "></script>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js "></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js "></script>
+
+    <script type="text/javascript ">
+        var socket = io();
+
+    </script>
+
+    <!-- JustGauge -->
+    <script src="vendor/justgage/raphael-2.1.4.min.js "></script>
+    <script src="vendor/justgage/justgage.js "></script>
+    <script src="js/gage.js"></script>
+
+    <!-- Data/Refresh Scripts -->
+    <script src="js/socket.telem.js"></script>
+
+</body>
+
+</html>

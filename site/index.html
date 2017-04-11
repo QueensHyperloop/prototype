@@ -61,9 +61,6 @@
                         <li>
                             <a href="clients.html"><i class="fa fa-plug fa-fw"></i> Clients</a>
                         </li>
-                        <li>
-                            <a href="http://192.168.10.52:8080"><i class="fa fa-hdd-o fa-fw"></i> RethinkDB</a>
-                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -80,22 +77,17 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-3 col-xs-6">
+                <div class="col-lg-4 col-xs-6">
                     <div class="panel panel-default">
-                        <div id="speedG" class="center-block" style="height:150px; width:150px;"></div>
+                        <div id="tempG" class="center-block" style="height:150px; width:150px;"></div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-xs-6">
+                <div class="col-lg-4 col-xs-6">
                     <div class="panel panel-default">
-                        <div id="batteryG" class="center-block" style="height:150px; width:150px;"></div>
+                        <div id="pressureG" class="center-block" style="height:150px; width:150px;"></div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="panel panel-default">
-                        <div id="clientG" class="center-block" style="height:150px; width:150px;"></div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
+                <div class="col-lg-4 col-xs-6">
                     <div class="panel panel-default">
                         <div id="clientG" class="center-block" style="height:150px; width:150px;"></div>
                     </div>
@@ -105,11 +97,11 @@
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-area-chart fa-fw"></i> Button presses
+                            <i class="fa fa-area-chart fa-fw"></i> Magnitude of Acceleration
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body center-block" style="width: 90%;">
-                            <canvas id="buttonChart"></canvas>
+                            <canvas id="accelChart"></canvas>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -191,8 +183,9 @@
 
     <script type="text/javascript ">
         var socket = io();
-        var refresh = 300; //sec
-        var time = new Date().getTime();
+        var refresh = 1000;
+        var time = new Date();
+
     </script>
 
     <!-- JustGauge -->
