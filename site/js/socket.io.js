@@ -1,5 +1,8 @@
 var i = 0;
 var j = 1;
+var rec = false;
+var rgb = false;
+var light = false;
 var prevD = new Date();
 socket.on('clients', function (num) {
     if (clientChart != null) {
@@ -66,3 +69,28 @@ socket.on('pressure', function (value) {
         p.refresh(value.toFixed(2));
     }
 });
+socket.on('speed', function (value) {
+    if (s != null) {
+        s.refresh(value.toFixed(2));
+    }
+});
+
+function doLight() {
+    light = Boolean(light - 1);
+    console.log(light)
+    socket.emit('light', light);
+}
+
+function doRGB() {
+    rgb = Boolean(rgb - 1);
+    socket.emit('rgb', rgb);
+}
+
+function doPicture() {
+    socket.emit('picture', true);
+}
+
+function doVideo() {
+    rec = Boolean(rec - 1);
+    socket.emit('rec', rec);
+}

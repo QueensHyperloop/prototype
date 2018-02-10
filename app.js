@@ -1,15 +1,37 @@
 const five = require('johnny-five');
-const Particle = require('particle-io');
+const Raspi = require("raspi-io");
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const cmd = require('node-cmd');
+
+
+function all_ledon() {
+    cmd.run('sudo i2cset -y 1 0x70 0x00 0xff');
+};
+
+function all_ledoff() {
+    cmd.run('sudo i2cset -y 1 0x70 0x00 0x00');
+};
+
+function ledon() {
+    cmd.run('sudo i2cset -y 1 0x70 0x00 0x5a');
+};
+
+function led_maxgain() {
+    cmd.run('sudo i2cset -y 1 0x70 0x09 0x0f');
+};
+
+function ledbright() {
+    cmd.run('sudo i2cset -y 1 0x70 0x02 0x32');
+    cmd.run('sudo i2cset -y 1 0x70 0x04 0x32');
+    cmd.run('sudo i2cset -y 1 0x70 0x05 0x32');
+    cmd.run('sudo i2cset -y 1 0x70 0x07 0x32');
+};
 
 var board = new five.Board({
-    io: new Particle({
-        token: "95157ca91ef1a5c2aeb9007ab7227004606b672c",
-        deviceId: "1a0036001647353236343033"
-    })
+    io: new Raspi()
 });
 
 app.use(express.static(__dirname + '/site'));
@@ -29,14 +51,17 @@ var clients = 0;
 
 board.on("ready", function () {
     console.log("Device Ready..");
-    var imu = new five.IMU({
+    /*var imu = new five.IMU({
         controller: "MPU6050",
-        freq: 100
+        freq: 100,
+        address: 0x68
     });
     var multi = new five.Multi({
         controller: "BMP180",
-        freq: 700
+        freq: 700,
+        adress: '0x70GPIO1'
     });
+    /*from data to change??
     imu.on("data", function () {
         sampleCount[0]++;
         accel[0] += this.accelerometer.x;
@@ -74,7 +99,8 @@ board.on("ready", function () {
             temp = 0;
             sampleCount[1] = 1;
         }
-    });
+    });*/
+
     io.on('connection', function (socket) {
         //console.log('a user connected');
         clients++;
@@ -83,6 +109,17 @@ board.on("ready", function () {
             //console.log('user disconnected');
             clients--;
             io.emit('clients', clients);
+        });
+        socket.on('light', function (value) {
+            if (value) {
+                all_ledon();
+            } else {
+                all_ledoff();
+            }
+        });
+        socket.on('picture', function (value) {
+            d = Math.floor(Date.now() / 100)
+            cmd.run('raspistill -o /home/pi/camera/' + d);
         });
     });
 });

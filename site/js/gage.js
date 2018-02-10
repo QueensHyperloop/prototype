@@ -34,3 +34,12 @@ if (document.getElementById("accelG") != null) {
         title: "Acceleration"
     });
 }
+if (document.getElementById("speedG") != null) {
+    var s = new JustGage({
+        id: "speedG",
+        value: 0,
+        min: 0,
+        max: 20,
+        title: "Speed"
+    });
+}
